@@ -63,3 +63,40 @@ td:nth-child(3) { font-weight: bold; color: var(--accent); background: rgba(0,0,
 
 .btn-delete { background: #eb4d4b; color: white; padding: 5px 10px; font-size: 0.7rem; border-radius: 4px; }
 .reporte-box { background: var(--accent); color: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
+
+/* ===== Modo de registro y grilla semanal ===== */
+.modo-toggle { display: flex; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.modo-toggle button { flex: 1; border-radius: 0; background: var(--bg-card); color: var(--text-sub); font-size: 0.8rem; }
+.modo-toggle button.activo { background: var(--accent); color: #fff; }
+.hint { margin: 0; font-size: 0.8rem; color: var(--text-sub); }
+
+.grilla-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.grilla-nav button { padding: 8px 14px; }
+.grilla-semana { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.grilla-semana span { font-size: 0.8rem; color: var(--text-sub); }
+.grilla-tools { display: flex; gap: 10px; margin-bottom: 12px; }
+.grilla-tools input { flex: 1; padding: 8px; min-width: 0; }
+.grilla-tools button { padding: 8px 12px; }
+
+.grilla-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+table.grilla { min-width: 460px; }
+table.grilla th, table.grilla td { text-align: center; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+table.grilla th { position: static; }
+table.grilla th small { display: block; font-weight: normal; font-size: 0.7rem; }
+table.grilla .col-dia { position: sticky; left: 0; z-index: 1; width: 64px; text-align: left; white-space: nowrap; padding-left: 10px; }
+table.grilla td:nth-child(3) { font-weight: normal; color: inherit; background: none; }
+table.grilla input { width: 100%; box-sizing: border-box; padding: 8px 2px; text-align: center; -moz-appearance: textfield; appearance: textfield; }
+table.grilla input::-webkit-outer-spin-button,
+table.grilla input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+table.grilla input:disabled { opacity: 0.3; cursor: not-allowed; }
+table.grilla input.cambiado { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+table.grilla th.hoy { color: var(--accent); }
+table.grilla td.hoy { background: rgba(9, 132, 227, 0.07); }
+table.grilla td.tot { font-size: 0.8rem; background: var(--table-head); color: var(--text-main); font-weight: normal; }
+table.grilla td.tot strong, table.grilla td.tot small { display: block; }
+table.grilla td.tot small { color: var(--text-sub); font-size: 0.7rem; }
+
+.grilla-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; }
+#grillaMsg { font-size: 0.85rem; color: var(--text-sub); }
+#grillaMsg.ok { color: #27ae60; }
+table.grilla td.tot { white-space: nowrap; min-width: 56px; }

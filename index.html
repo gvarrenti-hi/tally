@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sesiones - Dashboard Cronológico</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="theme-light">
     <div class="container">
@@ -59,13 +57,18 @@
             <aside class="sidebar">
                 <div class="card">
                     <h3>Registrar Nueva Sesión</h3>
-                    <div class="form-group">
+                    <div class="modo-toggle">
+                        <button id="btnModoFecha" class="activo" onclick="setModoRegistro('fecha')">📅 Por fecha</button>
+                        <button id="btnModoGrilla" onclick="setModoRegistro('grilla')">🗓️ Por grilla</button>
+                    </div>
+                    <div class="form-group" id="formFecha">
                         <label>Fecha de la actividad</label>
                         <input type="date" id="fechaRegistro">
                         <label>Duración (en minutos)</label>
-                        <input type="number" id="minutosSesion" placeholder="Ej: 30">
+                        <input type="number" id="minutosSesion" placeholder="Ej: 30" min="1">
                         <button onclick="guardarSesion()" class="btn-primary">Añadir al Historial</button>
                     </div>
+                    <p class="hint" id="hintGrilla" style="display:none;">La grilla semanal está en el panel principal (Vie → Jue, hasta 6 sesiones por día).</p>
                 </div>
 
                 <div class="card">
@@ -90,6 +93,29 @@
             </aside>
 
             <main class="content">
+                <div class="card" id="grillaCard" style="display:none;">
+                    <h3>Carga por grilla (Viernes → Jueves)</h3>
+                    <div class="grilla-nav">
+                        <button onclick="cambiarSemanaGrilla(-1)" class="btn-secondary" title="Semana anterior">◀</button>
+                        <div class="grilla-semana">
+                            <strong id="grillaRango">-</strong>
+                            <span id="grillaTotalSemana"></span>
+                        </div>
+                        <button onclick="cambiarSemanaGrilla(1)" class="btn-secondary" title="Semana siguiente">▶</button>
+                    </div>
+                    <div class="grilla-tools">
+                        <input type="date" id="grillaIrFecha" onchange="irASemanaDeFecha(this.value)" title="Ir a la semana que contiene esta fecha">
+                        <button onclick="irASemanaActual()" class="btn-secondary">Esta semana</button>
+                    </div>
+                    <div class="grilla-wrapper">
+                        <table class="grilla" id="tablaGrilla"></table>
+                    </div>
+                    <div class="grilla-footer">
+                        <span id="grillaMsg"></span>
+                        <button onclick="guardarGrilla()" class="btn-primary">Guardar semana</button>
+                    </div>
+                </div>
+
                 <div id="reporteOutput" class="reporte-box" style="display:none;"></div>
                 
                 <div class="card chart-container" id="chartCard" style="display:none;">
