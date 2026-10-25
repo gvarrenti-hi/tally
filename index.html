@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesiones - Dashboard Cronológico</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="theme-light">
+    <div class="container">
+        <header class="header-flex">
+            <h1>Sesiones: Monitor Progresivo</h1>
+            <div class="theme-selector">
+                <select id="selectTema" onchange="cambiarTema(this.value)">
+                    <option value="theme-light">Modo Liviano</option>
+                    <option value="theme-dark">Modo Oscuro</option>
+                    <option value="theme-ocean">Modo Océano</option>
+                    <option value="theme-forest">Modo Bosque</option>
+                </select>
+            </div>
+        </header>
+
+        <section class="dashboard">
+            <div class="stat-card">
+                <span class="stat-label">Tiempo Semana Actual</span>
+                <span class="stat-value" id="statSemana">0h 0m</span>
+                <span class="stat-sub" id="countSemana">0 sesiones</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Tiempo Mes Actual</span>
+                <span class="stat-value" id="statMes">0h 0m</span>
+                <span class="stat-sub" id="countMes">0 sesiones</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Total Histórico</span>
+                <span class="stat-value" id="statTotal">0h 0m</span>
+                <span class="stat-sub" id="countTotal">0 sesiones</span>
+            </div>
+        </section>
+
+        <section class="dashboard secondary-stats">
+            <div class="stat-card mini">
+                <span class="stat-label">Sesiones/Día (Sem. Actual)</span>
+                <span class="stat-value small" id="avgSemanaActual">0.0</span>
+            </div>
+            <div class="stat-card mini">
+                <span class="stat-label">Sesiones/Día (Sem. Pasada)</span>
+                <span class="stat-value small" id="avgSemanaPasada">0.0</span>
+            </div>
+            <div class="stat-card mini">
+                <span class="stat-label">Frecuencia en Filtro</span>
+                <span class="stat-value small" id="avgFiltro">0.0</span>
+            </div>
+        </section>
+        
+        <div class="main-grid">
+            <aside class="sidebar">
+                <div class="card">
+                    <h3>Registrar Nueva Sesión</h3>
+                    <div class="form-group">
+                        <label>Fecha de la actividad</label>
+                        <input type="date" id="fechaRegistro">
+                        <label>Duración (en minutos)</label>
+                        <input type="number" id="minutosSesion" placeholder="Ej: 30">
+                        <button onclick="guardarSesion()" class="btn-primary">Añadir al Historial</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Análisis y Exportación</h3>
+                    <div class="form-group">
+                        <label>Fecha Inicial</label>
+                        <input type="date" id="filtroDesde" onchange="actualizarTodo()">
+                        <label>Fecha Final</label>
+                        <input type="date" id="filtroHasta" onchange="actualizarTodo()">
+                        <div class="actions-vertical">
+                            <button onclick="ejecutarReporteGrafico()" class="btn-secondary">Actualizar Gráfico</button>
+                            <button onclick="exportarExcelFiltrado()" class="btn-success">Excel Cronológico (Acumulado)</button>
+                            <button onclick="descargarRespaldo()" class="btn-info">Backup JSON</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card maintenance">
+                    <button onclick="document.getElementById('importFile').click()" class="btn-warning">📂 Importar Datos JSON</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importarBackup(event)">
+                </div>
+            </aside>
+
+            <main class="content">
+                <div id="reporteOutput" class="reporte-box" style="display:none;"></div>
+                
+                <div class="card chart-container" id="chartCard" style="display:none;">
+                    <h3>Tendencia Cronológica de Actividad</h3>
+                    <canvas id="graficoSesiones"></canvas>
+                </div>
+
+                <div class="card">
+                    <div class="header-historial">
+                        <h3>Línea de Tiempo (De más antiguo a más reciente)</h3>
+                        <span id="badgeFiltro" class="badge" style="display:none;">Filtro Activo</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="tablaRegistros">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Sesión</th>
+                                    <th>Suma Progresiva</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
